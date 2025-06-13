@@ -1,28 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chat with MyBot</title>
-    <meta charset="UTF-8">
-    <style>
-        .return-link {
-            padding: 12px;
-            margin: 10px;
-            background-color: #e0f7fa;
-            border: 1px solid #26c6da;
-            border-radius: 8px;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat with StyleBot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #26c6da;
+      color: white;
+      width: 100%;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    main {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 500px;
+      padding: 0 20px;
+    }
+
+    .return-link {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .return-link a {
+      text-decoration: none;
+      color: #26c6da;
+      font-weight: bold;
+      border: 1px solid #26c6da;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background-color: #e0f7fa;
+      transition: 0.3s;
+    }
+
+    .return-link a:hover {
+      background-color: #b2ebf2;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Chatbot</h1>
+  <header>
+    <h1>Welcome to Your Style Assistant</h1>
+  </header>
 
-<!-- Dialogflow Messenger Embed -->
+<main>
+    <!-- Dialogflow Messenger Embed -->
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 <df-messenger
     intent="WELCOME"
-    chat-title="gender_chatbot"
+    chat-title="StyleBot"
     agent-id="ecd452e6-f5d0-4a79-a88b-aaeb5b6ef1ad"
     language-code="en"
 ></df-messenger>
@@ -61,6 +109,7 @@
     });
   });
 </script>
+</main>
 
 </body>
 </html>
