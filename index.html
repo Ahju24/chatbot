@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Chat with StyleBot</title>
   <style>
     body {
@@ -12,8 +12,6 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
       min-height: 100vh;
     }
 
@@ -21,9 +19,9 @@
       background-color: #26c6da;
       color: white;
       width: 100%;
-      padding: 20px 0;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px 30px;
+      text-align: left;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     h1 {
@@ -32,15 +30,16 @@
     }
 
     main {
-      margin-top: 30px;
-      width: 100%;
-      max-width: 500px;
-      padding: 0 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     .return-link {
       margin-top: 20px;
-      text-align: center;
+      text-align: left;
+      padding-left: 10px;
     }
 
     .return-link a {
@@ -57,6 +56,12 @@
     .return-link a:hover {
       background-color: #b2ebf2;
     }
+
+    df-messenger {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
   </style>
 </head>
 <body>
@@ -65,51 +70,50 @@
     <h1>Welcome to Your Style Assistant</h1>
   </header>
 
-<main>
+  <main>
     <!-- Dialogflow Messenger Embed -->
-<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-    intent="WELCOME"
-    chat-title="StyleBot"
-    agent-id="ecd452e6-f5d0-4a79-a88b-aaeb5b6ef1ad"
-    language-code="en"
-></df-messenger>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+        intent="WELCOME"
+        chat-title="StyleBot"
+        agent-id="ecd452e6-f5d0-4a79-a88b-aaeb5b6ef1ad"
+        language-code="en"
+    ></df-messenger>
+  </main>
 
-<script>
-  // Capture the pid from the URL and store it
-  const urlParams = new URLSearchParams(window.location.search);
-  const pid = urlParams.get('pid');
-  if (pid) {
-    sessionStorage.setItem('pid', pid);
-  }
+  <script>
+    // Capture the pid from the URL and store it
+    const urlParams = new URLSearchParams(window.location.search);
+    const pid = urlParams.get('pid');
+    if (pid) {
+      sessionStorage.setItem('pid', pid);
+    }
 
-  // Wait for the Dialogflow Messenger to be ready
-  window.addEventListener('df-messenger-loaded', function () {
-    const messenger = document.querySelector('df-messenger');
+    // Wait for the Dialogflow Messenger to be ready
+    window.addEventListener('df-messenger-loaded', function () {
+      const messenger = document.querySelector('df-messenger');
 
-    // Listen for messages from Dialogflow
-    messenger.addEventListener('df-response-received', function (event) {
-      const responses = event.detail.response.queryResult.fulfillmentMessages;
+      // Listen for messages from Dialogflow
+      messenger.addEventListener('df-response-received', function (event) {
+        const responses = event.detail.response.queryResult.fulfillmentMessages;
 
-      responses.forEach((response) => {
-        if (response.payload && response.payload.type === 'return_link') {
-          const storedPid = sessionStorage.getItem('pid') || 'missingPID';
-          const returnURL = `https://www.soscisurvey.de/seminar19/?r=return&pid=${storedPid}`;
+        responses.forEach((response) => {
+          if (response.payload && response.payload.type === 'return_link') {
+            const storedPid = sessionStorage.getItem('pid') || 'missingPID';
+            const returnURL = `https://www.soscisurvey.de/seminar19/?r=return&pid=${storedPid}`;
 
-          const messageDiv = document.createElement('div');
-          messageDiv.className = 'return-link';
-          messageDiv.innerHTML = `
-            
-            <a href="${returnURL}">Click here to return to the survey</a>
-          `;
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'return-link';
+            messageDiv.innerHTML = `
+              <a href="${returnURL}">Click here to return to the survey</a>
+            `;
 
-          document.body.appendChild(messageDiv);
-        }
+            document.querySelector('main').appendChild(messageDiv);
+          }
+        });
       });
     });
-  });
-</script>
-</main>
+  </script>
 
 </body>
 </html>
