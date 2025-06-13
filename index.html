@@ -89,6 +89,9 @@
       sessionStorage.setItem('pid', pid);
     }
 
+    // Flag to prevent duplicate return links
+    let returnLinkShown = false;
+    
     // Wait for the Dialogflow Messenger to be ready
     window.addEventListener('df-messenger-loaded', function () {
       const messenger = document.querySelector('df-messenger');
@@ -98,7 +101,8 @@
         const responses = event.detail.response.queryResult.fulfillmentMessages;
 
         responses.forEach((response) => {
-          if (response.payload && response.payload.type === 'return_link') {
+          if (response.payload && response.payload.type === 'return_link' && !returnLinkShown) {
+            returnLinkShown = true; // Set the flag to prevent future links
             const storedPid = sessionStorage.getItem('pid') || 'missingPID';
             const returnURL = `https://www.soscisurvey.de/seminar19/?r=return&pid=${storedPid}`;
 
