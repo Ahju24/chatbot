@@ -2,17 +2,66 @@
 <html>
 <head>
     <title>Chat with MyBot</title>
+    <meta charset="UTF-8">
+    <style>
+        .return-link {
+            padding: 12px;
+            margin: 10px;
+            background-color: #e0f7fa;
+            border: 1px solid #26c6da;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
+
 <h1>Chatbot</h1>
 
 <!-- Dialogflow Messenger Embed -->
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 <df-messenger
-        intent="WELCOME"
-        chat-title="gender_chatbot"
-        agent-id="ecd452e6-f5d0-4a79-a88b-aaeb5b6ef1ad"
-        language-code="en"
+    intent="WELCOME"
+    chat-title="gender_chatbot"
+    agent-id="ecd452e6-f5d0-4a79-a88b-aaeb5b6ef1ad"
+    language-code="en"
 ></df-messenger>
+
+<script>
+  // Capture the pid from the URL and store it
+  const urlParams = new URLSearchParams(window.location.search);
+  const pid = urlParams.get('pid');
+  if (pid) {
+    sessionStorage.setItem('pid', pid);
+  }
+
+  // Wait for the Dialogflow Messenger to be ready
+  window.addEventListener('df-messenger-loaded', function () {
+    const messenger = document.querySelector('df-messenger');
+
+    // Listen for messages from Dialogflow
+    messenger.addEventListener('df-response-received', function (event) {
+      const responses = event.detail.response.queryResult.fulfillmentMessages;
+
+      responses.forEach((response) => {
+        if (response.payload && response.payload.type === 'return_link') {
+          const storedPid = sessionStorage.getItem('pid') || 'missingPID';
+          const returnURL = `https://www.soscisurvey.de/seminar19/?r=return&pid=${storedPid}`;
+
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'return-link';
+          messageDiv.innerHTML = `
+            <strong>Thank you for chatting!</strong><br>
+            <a href="${returnURL}">Click here to return to the survey</a>
+          `;
+
+          document.body.appendChild(messageDiv);
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
+
